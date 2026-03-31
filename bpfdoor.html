@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>BPFdoor Detection - Actinova</title>
+
+    <!-- 경로 수정 -->
+    <link rel="stylesheet" href="./css/bpfdoor.css">
+</head>
+<body>
+
+<!-- 홈 버튼 (경로 수정) -->
+<a href="./index.html" style="float:right; padding:8px 16px; background:#1e3a8a; color:white; border-radius:8px; text-decoration:none;">
+    Home
+</a>
+
+<div class="hero">
+    <h1>BPFdoor Detection Technology</h1>
+    <p>커널 레벨에서 은닉된 백도어를 탐지합니다</p>
+</div>
+
+<section class="problem">
+    <h2>The Problem</h2>
+    <p>
+        BPFdoor는 커널 내부에서 동작하며,
+        기존 보안 솔루션이 탐지하지 못하는 은닉형 백도어입니다.
+    </p>
+</section>
+
+<section class="solution">
+    <h2>Our Solution</h2>
+    <ul>
+        <li>eBPF 기반 커널 이벤트 추적</li>
+        <li>비정상 소켓 행위 탐지</li>
+        <li>Hidden Process & Hook 분석</li>
+        <li>실시간 차단 및 로깅</li>
+    </ul>
+</section>
+
+<section class="flow">
+    <h2>Detection Flow</h2>
+    <p>패킷 → 커널 → eBPF Hook → 이벤트 분석 → 이상 탐지 → 차단</p>
+</section>
+
+<section class="advantage">
+    <h2>Why It's Different</h2>
+    <ul>
+        <li>커널 레벨 직접 추적</li>
+        <li>파일리스 공격 대응</li>
+        <li>제로데이 탐지 가능</li>
+    </ul>
+</section>
+
+<section class="cta">
+    <h2>Need Advanced Threat Detection?</h2>
+    <button onclick="goContact()">Contact Us</button>
+</section>
+
+<!-- 경로 수정 -->
+<script src="./js/main.js"></script>
+
+</body>
+</html>

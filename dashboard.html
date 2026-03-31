@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+.header {
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid #1f2937;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #111827;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #9ca3af;
+}
+
+.log {
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 13px;
+}
+
+.log div {
+    padding: 5px 0;
+    border-bottom: 1px solid #1f2937;
+}
+
+.alert {
+    color: #ef4444;
+}
+
+.success {
+    color: #22c55e;
+}
+
+.kernel {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin: 3px;
+}
+
+.badge.red { background: #7f1d1d; }
+.badge.green { background: #064e3b; }
+.badge.blue { background: #1e3a8a; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    🛡️ BPFdoor Detection Dashboard
+    <a href="./index.html" style="float:right; padding:8px 16px; background:#1e3a8a; color:white; border-radius:8px; text-decoration:none;">
+        Home
+    </a>
+</div>
+
+<div class="dashboard">
+
+    <div class="card">
+        <h2>🚨 Real-Time Alerts</h2>
+        <div class="log" id="log"></div>
+    </div>
+
+    <div class="card">
+        <h2>📈 Attack Traffic</h2>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>🧬 Kernel Events</h2>
+        <div class="log kernel" id="kernel"></div>
+    </div>
+
+    <div class="card">
+        <h2>🧠 Detection Status</h2>
+        <div>
+            <span class="badge red">BPFdoor Suspected</span>
+            <span class="badge blue">Socket Anomaly</span>
+            <span class="badge green">Fileless Attack</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+// 실시간 로그
+setInterval(() => {
+    const log = document.getElementById("log");
+    const entry = document.createElement("div");
+
+    const types = [
+        "[ALERT] Suspicious eBPF activity detected",
+        "[BLOCK] Unauthorized port access blocked",
+        "[WARN] Unknown process behavior"
+    ];
+
+    entry.classList.add("alert");
+    entry.innerText = types[Math.floor(Math.random() * types.length)] + " - " + new Date().toLocaleTimeString();
+
+    log.prepend(entry);
+
+    if (log.children.length > 10) log.removeChild(log.lastChild);
+
+}, 2000);
+
+// 커널 이벤트
+setInterval(() => {
+    const kernel = document.getElementById("kernel");
+    const entry = document.createElement("div");
+
+    const events = [
+        "sys_enter_execve",
+        "sys_socket",
+        "sys_connect",
+        "sys_bind",
+        "sys_clone"
+    ];
+
+    entry.innerText = events[Math.floor(Math.random() * events.length)] + "()";
+    kernel.prepend(entry);
+
+    if (kernel.children.length > 10) kernel.removeChild(kernel.lastChild);
+
+}, 1500);
+
+// 차트
+const ctx = document.getElementById('chart').getContext('2d');
+
+const data = {
+    labels: ["1", "2", "3", "4", "5", "6", "7"],
+    datasets: [{
+        label: 'Attacks',
+        data: [5, 10, 3, 8, 15, 7, 12],
+        borderColor: '#ef4444',
+        tension: 0.4
+    }]
+};
+
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { display: false },
+            y: { display: false }
+        }
+    }
+});
+
+// 그래프 업데이트
+setInterval(() => {
+    const newValue = Math.floor(Math.random() * 20);
+    chart.data.datasets[0].data.push(newValue);
+    chart.data.datasets[0].data.shift();
+    chart.update();
+}, 2000);
+
+</script>
+
+</body>
+</html>
